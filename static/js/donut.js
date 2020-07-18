@@ -6,6 +6,7 @@ class Donut {
     // Vars
     counts = {};
     data_arcs = [];
+    total_count = 0;
 
     // Elements
     svg = null;
@@ -73,13 +74,15 @@ class Donut {
         const langMap = vis.data.map(d => d.prog_lang);
         
         // Fill dictionary of language counts.
-        var counts = {}
+        var counts = {};
+        vis.total_count = 0;
         for (var i = 0; i < langMap.length; i++) {
           var lang = langMap[i]
           if (!counts[lang]) {
             counts[lang] = 0;
           }
           counts[lang]++;
+          vis.total_count++;
         } 
         vis.counts = d3.entries(counts)
         
@@ -107,6 +110,7 @@ class Donut {
             .attr("class", "arc")
           .append("path")
             .attr("d", this.arc)
+            .attr("class", function(d){ return "arc-lang-"+d.data.key;})
             .attr("fill", function(d, i) {
               return vis.color(i);
             })
@@ -114,12 +118,12 @@ class Donut {
             .style("stroke-width", "1px")
             .on("mouseover", function(d) {
               d3.select(this).attr("opacity", 0.7);
-              d3.select(".lang-"+d.data.key)
+              d3.select(".text-lang-"+d.data.key)
                 .style("opacity", 1);
             })
             .on("mouseout", function(d) {
               d3.select(this).attr("opacity", 1);
-              d3.select(".lang-"+d.data.key)
+              d3.select(".text-lang-"+d.data.key)
                 .style("opacity", 0);
             });
           
@@ -133,15 +137,28 @@ class Donut {
             .attr("fill", "white")
             .style("font-weight", "bold")
             .style("font-size", "1.2em")
-            .style("font-family", 'monospace');
+            .style("font-family", 'monospace')
+            .on("mouseover", function(d) {
+              d3.select(".arc-lang-"+d.data.key).attr("opacity", 0.7);
+              d3.select(".text-lang-"+d.data.key)
+                .style("opacity", 1);
+            })
+            .on("mouseout", function(d) {
+              d3.select(".arc-lang-"+d.data.key).attr("opacity", 1);
+              d3.select(".text-lang-"+d.data.key)
+                .style("opacity", 0);
+            });
             
         // Render info text in center of donut.  
         vis.g.selectAll(".arc")
           .data(vis.data_arcs)
           .append("text")
-            .text(function(d){ return d.data.value; })
-            .attr("class", function(d){ return "lang-"+d.data.key;})
+            .text(function(d){ return (d.data.value/vis.total_count)*100 + "%"; })
+            .attr("class", function(d){ return "text-lang-"+d.data.key;})
             .style("text-anchor", "middle")
+            .style("font-weight", "bold")  
+            .style("font-size", "1.5em")
+            .style("font-family", 'monospace')
             .style("opacity", 0);
             
         // Render chart title.

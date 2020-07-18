@@ -3,9 +3,6 @@
  */
 class Scatter {
 
-    // Vars
-    data_bins = [];
-
     // Elements
     svg = null;
     g = null;
@@ -67,14 +64,18 @@ class Scatter {
         vis.xAxisG.append('text')
             .attr('class', 'label labelX')
             .style('transform', `translate(${vis.gW / 2}px, 40px)`)
-            .text('Years Experience');
+            .text('Years Experience')
+            .style("font-family", "arial")
+            .style("font-weight", "bold");
         vis.yAxisG = vis.g.append('g')
             .attr('class', 'axis axisY')
             .style('transform', 'translateX(-15px)');
         vis.yAxisG.append('text')
             .attr('class', 'label labelY')
             .style('transform', `rotate(-90deg) translate(-${vis.gH / 2}px, -30px)`)
-            .text('HW1 Hours');
+            .text('HW1 Hours')
+            .style("font-family", "arial")
+            .style("font-weight", "bold");
 
 
         // Now wrangle
@@ -103,8 +104,8 @@ class Scatter {
         vis.scDot.domain(d3.extent(ageMap));
         vis.scX.domain(d3.extent(expMap));
         vis.scY.domain(d3.extent(hrsMap));           
-        vis.xAxis.scale(vis.scX).ticks(vis.data_bins.length);
-        vis.yAxis.scale(vis.scY);
+        vis.xAxis.scale(vis.scX).ticks();
+        vis.yAxis.scale(vis.scY).ticks();
 
         // Now render
         vis.render();
@@ -140,7 +141,8 @@ class Scatter {
           .attr("y", -vis.gMargin.top/2)
           .attr("text-anchor", "middle")
           .style("font-weight", "bold")  
-          .style("font-size", "1.5em");
+          .style("font-size", "1.5em")
+          .style("font-family", 'arial');
 
         // Update axis
         vis.xAxisG.call(vis.xAxis);
