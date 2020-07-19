@@ -8,10 +8,10 @@ load_dotenv('.env')
 app = Flask(__name__)
 
 # Local DB connection
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:s14a-key@localhost:5432/homework_users_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:s14a-key@localhost:5432/homework_users_db'
 
 # Heroku DB connection
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://htrinqiwxzxzij:17ca73852da0ac67af02db7cfa91194ab8395f093febfc8031c13ea9608a25eb@ec2-34-239-241-25.compute-1.amazonaws.com:5432/d12ferep4s5v81'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://htrinqiwxzxzij:17ca73852da0ac67af02db7cfa91194ab8395f093febfc8031c13ea9608a25eb@ec2-34-239-241-25.compute-1.amazonaws.com:5432/d12ferep4s5v81'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = environ.get('SECRET_KEY')
